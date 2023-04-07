@@ -1,0 +1,27 @@
+{
+  "name": "create-sb-uikit",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "author": "bang9 <gusrn1423@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "create-app": "node ./index.js"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "inquirer": "^9.1.5",
+    "node-fetch": "^3.3.1",
+    "semver": "^7.3.8",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.7"
+  }
+}
