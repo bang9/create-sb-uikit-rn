@@ -2,11 +2,13 @@
   "name": "create-sb-uikit",
   "version": "1.0.0",
   "type": "module",
+  "private": true,
   "main": "index.js",
   "author": "bang9 <gusrn1423@naver.com>",
   "license": "MIT",
   "scripts": {
-    "create-app": "node ./index.js"
+    "create-app": "node ./index.js",
+    "clear": "rm -rf projects"
   },
   "licenses": [
     {
