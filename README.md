@@ -3,9 +3,11 @@
 This project is a tool that helps scaffold the "Send your first message" feature of Sendbird UIKit for React-Native.
 
 ## Prerequisites
+check here (https://reactnative.dev/docs/environment-setup?platform=ios)
 
 - node.js >= 16 & npm
 - yarn v1
+- Ruby
 - cocoapods
 
 ## How to Run
