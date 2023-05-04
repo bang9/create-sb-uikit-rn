@@ -38,12 +38,39 @@ function setupTypeScript(project) {
 function setupSendbird(project, uikitVersion) {
   log("Setup sendbird to project");
 
+  const [major, minor] = project.version.split(".");
+  let createThumbnailVersion = "",
+    safeAreaContextVersion = "",
+    documentPickerVersion = "",
+    fileAccessVersion = "",
+    asyncStorageVersion = "",
+    cameraRollVersion = "",
+    clipboardVersion = "",
+    reactNativeScreens = "";
+
+  if (minor > 69) {
+    createThumbnailVersion = "2.0.0-rc.2";
+  }
+  if (minor <= 68) {
+    safeAreaContextVersion = "3.4.1";
+  }
+  if (minor <= 66) {
+    asyncStorageVersion = "1.7.0";
+    cameraRollVersion = "4.1.2";
+    clipboardVersion = "1.9.0";
+  }
+  if (minor <= 64) {
+    reactNativeScreens = "3.14.0";
+    documentPickerVersion = "4";
+    fileAccessVersion = "1.7.1";
+  }
+
   install(
     [
       "@bam.tech/react-native-image-resizer",
-      "@react-native-async-storage/async-storage",
-      "@react-native-camera-roll/camera-roll",
-      "@react-native-clipboard/clipboard",
+      `@react-native-async-storage/async-storage@react-native-async-storage/async-storage#${asyncStorageVersion}`,
+      `@react-native-camera-roll/camera-roll@react-native-cameraroll/react-native-cameraroll#${cameraRollVersion}`,
+      `@react-native-clipboard/clipboard@${clipboardVersion}`,
       "@react-native-community/netinfo",
       "@react-navigation/native",
       "@react-navigation/native-stack",
@@ -52,13 +79,13 @@ function setupSendbird(project, uikitVersion) {
       "@sendbird/react-native-scrollview-enhancer", // Added since 2.5.0
       "@types/react-native-video",
       "date-fns",
-      "react-native-create-thumbnail",
-      "react-native-document-picker",
-      "react-native-file-access",
+      `react-native-create-thumbnail@${createThumbnailVersion}`,
+      `react-native-document-picker@${documentPickerVersion}`,
+      `react-native-file-access@${fileAccessVersion}`,
       "react-native-image-picker",
       "react-native-permissions",
-      "react-native-safe-area-context",
-      "react-native-screens",
+      `react-native-safe-area-context@${safeAreaContextVersion}`,
+      `react-native-screens@${reactNativeScreens}`,
       "react-native-video",
     ],
     project.path

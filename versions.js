@@ -11,7 +11,7 @@ export async function readVersions(pkg, includeRC) {
 }
 
 export async function getRNVersions() {
-  const minVersion = "0.63.3";
+  const minVersion = "0.64.4";
   const versions = await readVersions("react-native");
   return versions.filter((it) => semver.satisfies(it, `>=${minVersion}`));
 }
