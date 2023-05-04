@@ -40,8 +40,11 @@ async function run() {
   const project = createProject(rn_version);
   installDependencies(project, uikit_version);
 
-  log(`Done! 🎉 ${project.name}`);
   exec(`open ${project.path}`);
+  log(`🎉 Done!`);
+  logGroup(`🗂️ ${project.name} has been created`);
+  logGroup("Before start the project, you should set team to XCode project.");
+  logGroup(`Open ${project.name}.xcworkspace > Signing & Capabilities > Team`);
 }
 
 run();

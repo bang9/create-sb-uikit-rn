@@ -49,6 +49,7 @@ function setupSendbird(project, uikitVersion) {
       "@react-navigation/native-stack",
       "@sendbird/chat",
       `@sendbird/uikit-react-native@${uikitVersion}`,
+      "@sendbird/react-native-scrollview-enhancer", // Added since 2.5.0
       "@types/react-native-video",
       "date-fns",
       "react-native-create-thumbnail",
