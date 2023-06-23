@@ -3,7 +3,20 @@ import path from "path";
 
 function install(deps, path, dev = false) {
   logGroup("Install dependencies to", path);
+
+  const depsFromGit = deps.filter((it) => it.includes("#"));
+
   exec(`yarn add ${deps.join(" ")}` + (dev ? " --dev" : ""), path);
+
+  depsFromGit.forEach((dep) => {
+    const pkg = dep.slice(0, dep.lastIndexOf("@"));
+    try {
+      exec(
+        `cd node_modules/${pkg} && npx react-native-builder-bob@latest build`,
+        path
+      );
+    } catch {}
+  });
 }
 
 function setupTypeScript(project) {
@@ -38,7 +51,7 @@ function setupTypeScript(project) {
 function setupSendbird(project, uikitVersion) {
   log("Setup sendbird to project");
 
-  const [major, minor] = project.version.split(".");
+  const [, minor] = project.version.split(".");
   let createThumbnailVersion = "",
     safeAreaContextVersion = "",
     documentPickerVersion = "",
@@ -65,31 +78,34 @@ function setupSendbird(project, uikitVersion) {
     fileAccessVersion = "1.7.1";
   }
 
-  install(
-    [
-      "@bam.tech/react-native-image-resizer",
-      `@react-native-async-storage/async-storage@react-native-async-storage/async-storage#${asyncStorageVersion}`,
-      `@react-native-camera-roll/camera-roll@react-native-cameraroll/react-native-cameraroll#${cameraRollVersion}`,
-      `@react-native-clipboard/clipboard@${clipboardVersion}`,
-      "@react-native-community/netinfo",
-      "@react-navigation/native",
-      "@react-navigation/native-stack",
-      "@sendbird/chat",
-      `@sendbird/uikit-react-native@${uikitVersion}`,
-      "@sendbird/react-native-scrollview-enhancer", // Added since 2.5.0
-      "@types/react-native-video",
-      "date-fns",
-      `react-native-create-thumbnail@${createThumbnailVersion}`,
-      `react-native-document-picker@${documentPickerVersion}`,
-      `react-native-file-access@${fileAccessVersion}`,
-      "react-native-image-picker",
-      "react-native-permissions",
-      `react-native-safe-area-context@${safeAreaContextVersion}`,
-      `react-native-screens@${reactNativeScreens}`,
-      "react-native-video",
-    ],
-    project.path
-  );
+  const deps = [
+    "@bam.tech/react-native-image-resizer",
+    `@react-native-async-storage/async-storage@react-native-async-storage/async-storage#${asyncStorageVersion}`,
+    `@react-native-camera-roll/camera-roll@react-native-cameraroll/react-native-cameraroll#${cameraRollVersion}`,
+    `@react-native-clipboard/clipboard@${clipboardVersion}`,
+    "@react-native-community/netinfo",
+    "@react-navigation/native",
+    "@react-navigation/native-stack",
+    "@sendbird/chat",
+    `@sendbird/uikit-react-native@${uikitVersion}`,
+    "@types/react-native-video",
+    "date-fns",
+    `react-native-create-thumbnail@${createThumbnailVersion}`,
+    `react-native-document-picker@${documentPickerVersion}`,
+    `react-native-file-access@${fileAccessVersion}`,
+    "react-native-image-picker",
+    "react-native-permissions",
+    `react-native-safe-area-context@${safeAreaContextVersion}`,
+    `react-native-screens@${reactNativeScreens}`,
+    "react-native-video",
+  ];
+
+  // Since 2.5.0
+  if (minor < 72) {
+    deps.push("@sendbird/react-native-scrollview-enhancer");
+  }
+
+  install(deps, project.path);
 
   logGroup("Update package.json");
   const pkg = JSON.parse(
@@ -124,11 +140,13 @@ function setupFiles(project, uikitVersion) {
     fs.rmSync(path.join(project.path, "App.tsx"));
   } catch {}
 
+  const rcRemovedVersion = uikitVersion.replace(/-rc.+/, "");
+
   logGroup("Create App.tsx");
   let templatePath = path.join(
     __dirname,
     "templates",
-    `App.tsx-${uikitVersion}`
+    `App.tsx-${rcRemovedVersion}`
   );
   if (!fs.existsSync(templatePath)) {
     templatePath = path.join(__dirname, "templates", `App.tsx-2.4.1`);

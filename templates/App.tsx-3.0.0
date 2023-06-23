@@ -256,10 +256,20 @@ const App = () => {
   return (
     <SendbirdUIKitContainer
       appId={APP_ID}
+      uikitOptions={{
+        common: {
+          enableUsingDefaultUserProfile: true,
+        },
+        groupChannel: {
+          enableMention: true,
+        },
+        groupChannelSettings: {
+          enableMessageSearch: true,
+        },
+      }}
       chatOptions={{
         localCacheStorage: AsyncStorage,
         enableAutoPushTokenRegistration: false,
-        enableMessageSearch: true,
       }}
       userProfile={{
         onCreateChannel() {},
