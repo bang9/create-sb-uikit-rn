@@ -105,6 +105,13 @@ function setupSendbird(project, uikitVersion) {
     deps.push("@sendbird/react-native-scrollview-enhancer");
   }
 
+  if (minor > 70) {
+    const asyncIdx = deps.findIndex(dep => dep.startsWith("@react-native-async-storage/async-storage"));
+    const cameraRollIdx = deps.findIndex(dep => dep.startsWith("@react-native-camera-roll/camera-roll"));
+    deps[asyncIdx] = "@react-native-async-storage/async-storage@latest";
+    deps[cameraRollIdx] = "@react-native-camera-roll/camera-roll@latest";
+  }
+
   install(deps, project.path);
 
   logGroup("Update package.json");
