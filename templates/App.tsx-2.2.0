@@ -68,9 +68,11 @@ const GroupChannelListScreen = () => {
 
 const GroupChannelCreateScreen = () => {
   const navigation = useNavigation<any>();
+  const { params } = useRoute<any>();
 
   return (
     <GroupChannelCreateFragment
+      channelType={params.channelType}
       onCreateChannel={async channel => {
         // Navigate to GroupChannel function.
         navigation.replace('GroupChannel', {channelUrl: channel.url});
