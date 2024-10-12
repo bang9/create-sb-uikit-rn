@@ -1,7 +1,5 @@
-import { initDirectory } from "./directories.js";
+import {initDirectory} from "./directories.js";
 import path from "path";
-import fs from "fs";
-import { exec as execAsync } from "child_process";
 
 export function createProject(version) {
   log("Create react-native project...");
@@ -23,10 +21,12 @@ export function createProject(version) {
   const projectPath = path.join(cwd, name);
 
   try {
-    exec(`npx react-native init ${name} --version=${version}`, cwd);
+    exec(`npx @react-native-community/cli init ${name} --version=${version}`, cwd);
   } catch {
     writeGemFile(minor, projectPath);
   }
+
+  log("📦 Create project", name);
 
   return {
     cwd,

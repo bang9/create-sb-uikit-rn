@@ -53,14 +53,14 @@ function setupSendbird(project, uikitVersion) {
   log("Setup sendbird to project");
 
   const [, minor] = project.version.split(".");
-  let createThumbnailVersion = "",
-    safeAreaContextVersion = "",
-    documentPickerVersion = "",
-    fileAccessVersion = "",
-    asyncStorageVersion = "",
-    cameraRollVersion = "",
-    clipboardVersion = "",
-    reactNativeScreens = "";
+  let createThumbnailVersion = "latest",
+    safeAreaContextVersion = "latest",
+    documentPickerVersion = "latest",
+    fileAccessVersion = "latest",
+    asyncStorageVersion = "latest",
+    cameraRollVersion = "latest",
+    clipboardVersion = "latest",
+    reactNativeScreens = "latest";
 
   if (minor > 69) {
     createThumbnailVersion = "2.0.0-rc.2";
@@ -116,7 +116,7 @@ function setupSendbird(project, uikitVersion) {
   // Setup by UIKit version
   const uikit = uikitVersion.replace(/-rc.+/, "");
   if (semver.satisfies(uikit, ">=3.2.0")) {
-    deps.push("react-native-react-native-audio-recorder-player");
+    deps.push("react-native-audio-recorder-player");
   }
 
 
@@ -129,15 +129,15 @@ function setupSendbird(project, uikitVersion) {
     })
   );
 
-  pkg["reactNativePermissionsIOS"] = [
-    "Camera",
-    "Microphone",
-    "PhotoLibrary",
-    "MediaLibrary",
-    "PhotoLibraryAddOnly",
-  ];
-  pkg["scripts"]["postinstall"] =
-    "react-native setup-ios-permissions && pod-install";
+  // pkg["reactNativePermissionsIOS"] = [
+  //   "Camera",
+  //   "Microphone",
+  //   "PhotoLibrary",
+  //   "MediaLibrary",
+  //   "PhotoLibraryAddOnly",
+  // ];
+  // pkg["scripts"]["postinstall"] =
+  //   "react-native setup-ios-permissions && pod-install";
 
   fs.writeFileSync(
     path.join(project.path, "package.json"),
@@ -202,8 +202,10 @@ function setupFiles(project, uikitVersion) {
 }
 
 export function installDependencies(project, uikitVersion) {
-  setupTypeScript(project);
+  if (semver.satisfies(project.version, '<0.71.0')) {
+    setupTypeScript(project);
+  }
   setupSendbird(project, uikitVersion);
   setupFiles(project, uikitVersion);
-  exec("yarn", project.path);
+  exec("yarn install", project.path);
 }

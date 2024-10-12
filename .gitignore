@@ -1,3 +1,8 @@
 projects
 .idea
 node_modules
+
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
