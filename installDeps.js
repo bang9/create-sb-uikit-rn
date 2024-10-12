@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import semver from "semver";
 
 function install(deps, path, dev = false) {
   logGroup("Install dependencies to", path);
@@ -111,6 +112,13 @@ function setupSendbird(project, uikitVersion) {
     deps[asyncIdx] = "@react-native-async-storage/async-storage@latest";
     deps[cameraRollIdx] = "@react-native-camera-roll/camera-roll@latest";
   }
+
+  // Setup by UIKit version
+  const uikit = uikitVersion.replace(/-rc.+/, "");
+  if (semver.satisfies(uikit, ">=3.2.0")) {
+    deps.push("react-native-react-native-audio-recorder-player");
+  }
+
 
   install(deps, project.path);
 
