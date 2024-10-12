@@ -118,7 +118,12 @@ function setupSendbird(project, uikitVersion) {
   if (semver.satisfies(uikit, ">=3.2.0")) {
     deps.push("react-native-audio-recorder-player");
   }
-
+  if (semver.satisfies(uikit, ">=3.7.0")) {
+    // Remove async-storage
+    const asyncIdx = deps.findIndex(dep => dep.includes("async-storage"));
+    deps.splice(asyncIdx, 1);
+    deps.push('react-native-mmkv');
+  }
 
   install(deps, project.path);
 
