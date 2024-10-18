@@ -122,7 +122,7 @@ function setupSendbird(project, uikitVersion) {
     // Remove async-storage
     const asyncIdx = deps.findIndex(dep => dep.includes("async-storage"));
     deps.splice(asyncIdx, 1);
-    deps.push('react-native-mmkv');
+    deps.push('react-native-mmkv@2.x.x');
   }
 
   install(deps, project.path);
